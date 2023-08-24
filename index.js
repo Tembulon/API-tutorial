@@ -5,7 +5,7 @@ const app = express();
 const port = 3000;
 const API_URL = "https://secrets-api.appbrewery.com";
 
-// TODO: Replace the values below with your own before running this file.
+// Authentication details
 const yourUsername = "Tembulon";
 const yourPassword = "Kachumbari";
 const yourAPIKey = "1a9bc1d0-f1a7-4fb0-a57f-7125f13440bb";
@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
   res.render("index.ejs", { content: "API Response." });
 });
 
+// No authentication 
 app.get("/noAuth", async (req, res) => {
   try {
     const result = await axios.get(API_URL + "/random");
@@ -24,6 +25,7 @@ app.get("/noAuth", async (req, res) => {
   }
 });
 
+// username and password authentication
 app.get("/basicAuth", async (req, res) => {
   try {
     const result = await axios.get(
@@ -41,6 +43,7 @@ app.get("/basicAuth", async (req, res) => {
   }
 });
 
+// api key autherntication
 app.get("/apiKey", async (req, res) => {
   try {
     const result = await axios.get(API_URL + "/filter", {
@@ -55,10 +58,11 @@ app.get("/apiKey", async (req, res) => {
   }
 });
 
+// token requires header manipulation instead of parameters like previous code. creating header template to fill with token
 const config = {
   headers: { Authorization: `Bearer ${yourBearerToken}` },
 };
-
+// token authentication
 app.get("/bearerToken", async (req, res) => {
   try {
     const result = await axios.get(API_URL + "/secrets/2", config);
